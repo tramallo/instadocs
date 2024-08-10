@@ -1,8 +1,8 @@
 import { View, TextInput, Button, Text } from "react-native";
 import { useState } from "react";
 
-import { supabase } from "../assets/supabase";
-import { styles } from "../assets/styles";
+import { supabase } from "../resources/supabase";
+import { styles } from "../resources/styles";
 
 export default function SignUpRoute() {
   const [email, setEmail] = useState("");

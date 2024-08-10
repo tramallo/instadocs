@@ -2,8 +2,8 @@ import { TextInput, View, FlatList, Button } from "react-native";
 import { useEffect, useState } from "react";
 
 import MessageCard from "../../components/MessageCard";
-import { styles } from "../../assets/styles";
-import { supabase } from "../../assets/supabase";
+import { styles } from "../../resources/styles";
+import { supabase } from "../../resources/supabase";
 import { useAuthContext } from "../../components/AuthContext";
 
 export default function HomeRoute() {

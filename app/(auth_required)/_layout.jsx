@@ -3,7 +3,7 @@ import { Redirect, Slot, useNavigation } from "expo-router";
 import { Pressable, Text } from "react-native";
 
 import { useAuthContext } from "../../components/AuthContext";
-import { supabase } from "../../assets/supabase";
+import { supabase } from "../../resources/supabase";
 
 export default function AuthRequiredLayout() {
   const { isAuthenticated, authenticatedUser } = useAuthContext();

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { View, TextInput, Button, Text } from "react-native";
 import { Link } from "expo-router";
 
-import { supabase } from "../assets/supabase";
-import { styles } from "../assets/styles";
+import { supabase } from "../resources/supabase";
+import { styles } from "../resources/styles";
 
 export default function SignInComponent() {
   const [email, setEmail] = useState("");
