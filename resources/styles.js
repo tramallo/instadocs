@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     borderColor: "red",
   },
   screenContainer: {
+    width: "100%",
     flex: 1,
     alignItems: "center",
     padding: "1%",

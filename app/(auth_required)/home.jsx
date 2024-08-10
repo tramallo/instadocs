@@ -1,67 +1,38 @@
-import { TextInput, View, FlatList, Button } from "react-native";
 import { useEffect, useState } from "react";
+import { Button, FlatList, View } from "react-native";
 
-import MessageCard from "../../components/MessageCard";
-import { styles } from "../../resources/styles";
 import { supabase } from "../../resources/supabase";
-import { useAuthContext } from "../../components/AuthContext";
+import { styles } from "../../resources/styles";
+import DocumentListEntry from "../../components/DocumentListEntry";
 
-export default function HomeRoute() {
-  const { isAuthenticated, authenticatedUser } = useAuthContext();
+export default function Home() {
+  const [loadingDocuments, setLoadingDocuments] = useState(false);
+  const [documents, setDocuments] = useState([]);
 
-  const [newMessageContent, setNewMessageContent] = useState("");
-  const [sentMessages, setSentMessages] = useState([]);
-  const [isSentMessagesLoading, setIsSentMessagesLoading] = useState(false);
-
-  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
-
-  // upload new message
-  const onSendButtonPress = () => {
-    if (!newMessageContent) return;
-
-    const newMessage = {
-      content: newMessageContent,
-      sentBy: authenticatedUser.email,
-      sentAt: new Date().toISOString(),
-    };
-
-    const postNewMessage = async () =>
-      await supabase.from("messages").insert(newMessage);
-    const uploadNewMessage = async () => {
-      const { data, error } = await postNewMessage();
-
-      if (error) {
-        console.log("error posting message");
-        console.log(error);
-      } else {
-        setNewMessageContent("");
-      }
-    };
-    uploadNewMessage();
-  };
-
-  // load previously sent messages
+  //fetch documents on initial load
   useEffect(() => {
-    const updateSentMessages = async () => {
-      setIsSentMessagesLoading(true);
+    const updateDocuments = async () => {
+      setLoadingDocuments(true);
       const { data, error } = await supabase
-        .from("messages")
-        .select("*")
-        .order("sentAt", { ascending: true });
-      setIsSentMessagesLoading(false);
+        .from("shipmentOrders")
+        .select(
+          `id, status, createdBy, createdAt, doneBy, doneAt, shipments ( id, client, priority, payMethod, packages )`
+        )
+        .order("status", { ascending: true });
+      setLoadingDocuments(false);
 
       if (error) {
-        console.log("error fetching messages");
+        console.log("error fetching documents");
         console.log(error);
       } else {
-        setSentMessages(data.reverse());
+        setDocuments(data);
       }
     };
-    updateSentMessages();
+    updateDocuments();
   }, []);
 
   // subscribe to receive new messages in real time
-  useEffect(() => {
+  /*   useEffect(() => {
     const handleInserts = (data) => {
       const newMessage = data.new;
       setSentMessages((sentMessages) => [newMessage, ...sentMessages]);
@@ -81,44 +52,22 @@ export default function HomeRoute() {
       .subscribe();
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, []); */
 
+  // TODO: add loading sign when loading initial documents
+  // TODO: add no-data sign when documents is empty
   return (
     <View style={styles.screenContainer}>
       <FlatList
-        style={styles.messagesList}
-        data={sentMessages}
+        style={{ width: "100%" }}
+        data={documents}
         inverted={true}
-        extraData={sentMessages}
+        extraData={documents}
         renderItem={({ item }) => (
-          <MessageCard
-            key={item.id}
-            content={item.content}
-            sentBy={item.sentBy}
-            sentAt={item.sentAt}
-          />
+          <DocumentListEntry key={item.id} document={item} />
         )}
       />
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "space-between",
-        }}
-      >
-        <TextInput
-          style={{ backgroundColor: "white", borderRadius: 3, flex: 1 }}
-          onChangeText={setNewMessageContent}
-          value={newMessageContent}
-          placeholder="escribe un mensaje"
-          multiline={true}
-        />
-        <Button
-          title="Enviar"
-          onPress={onSendButtonPress}
-          disabled={isLogoutLoading}
-        />
-      </View>
+      <Button title="nuevo documento" />
     </View>
   );
 }

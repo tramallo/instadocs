@@ -7,7 +7,7 @@ export default function SignInRoute() {
   const { isAuthenticated } = useAuthContext();
 
   if (isAuthenticated) {
-    return <Redirect href="/homee" />;
+    return <Redirect href="/home" />;
   }
   return <SignInComponent />;
 }
