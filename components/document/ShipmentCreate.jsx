@@ -4,12 +4,11 @@ import { View, TextInput, StyleSheet } from "react-native";
 import SimpleButton from "../SimpleButton";
 
 export default function ShipmentCreate({ newShipmentCallback, readOnly }) {
-  const [newShipmentClient, setNewShipmentClient] = useState();
-  const [newShipmentPackages, setNewShipmentPackages] = useState();
-  const [newShipmentPayMethod, setNewShipmentPayMethod] = useState();
-  const [newShipmentPriority, setNewShipmentPriority] = useState();
+  const [newShipmentClient, setNewShipmentClient] = useState("");
+  const [newShipmentPackages, setNewShipmentPackages] = useState("");
+  const [newShipmentPayMethod, setNewShipmentPayMethod] = useState("");
+  const [newShipmentPriority, setNewShipmentPriority] = useState("");
 
-  // TODO: web sizing wrong when shrinking page
   const styles = StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -19,10 +18,11 @@ export default function ShipmentCreate({ newShipmentCallback, readOnly }) {
       backgroundColor: "blue",
     },
     inputEntry: {
+      minWidth: 0,
       borderRadius: 5,
-      flex: 1,
       textAlign: "center",
       margin: "1%",
+      flex: 1,
       backgroundColor: readOnly ? "grey" : "white",
     },
     createShipmentButton: {

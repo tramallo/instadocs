@@ -31,6 +31,7 @@ export default function SignUpRoute() {
     },
     errorMessage: { color: "red", fontSize: 10 },
     inputField: {
+      padding: "1%",
       backgroundColor: isLoading ? "grey" : "white",
       borderRadius: 5,
       marginBottom: "1%",

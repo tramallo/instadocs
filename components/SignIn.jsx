@@ -18,6 +18,8 @@ export default function SignInComponent() {
       padding: "1%",
     },
     inputField: {
+      borderRadius: 5,
+      padding: "1%",
       backgroundColor: isLoading ? "grey" : "white",
       marginBottom: "1%",
       fontSize: 16,
